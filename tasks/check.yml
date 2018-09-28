@@ -1,0 +1,30 @@
+---
+# Role check tasks
+
+- block:
+    - name: assert platform is supported
+      assert:
+        that:
+          - distribution in oracle_java_supported_distributions
+          - >-
+            ansible_facts.distribution_version
+            is version(oracle_java_supported_versions[distribution], ">=")
+      vars:
+        distribution: "{{ ansible_facts.distribution | lower }}"
+
+    - name: assert oracle license accepted
+      assert:
+        that:
+          - oracle_java_accept_license
+
+    - name: assert download artifact is valid
+      assert:
+        that:
+          - >-
+            oracle_java_effective_version in oracle_java_latest_versions
+            or (oracle_java_effective_version
+                not in oracle_java_latest_versions
+                and oracle_java_artifact.file | length > 0)
+  tags:
+    - role::oracle_java
+    - role::oracle_java::check

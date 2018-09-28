@@ -1,0 +1,46 @@
+---
+# Role download tasks
+
+- block:
+    - name: check if oracle java is installed
+      stat:
+        path: "{{ java_path }}"
+      register: oracle_java_check_installed_result
+      vars:
+        separator: >-
+          {{ (oracle_java_effective_version is search(".*u.*"))
+             | ternary("", "-") }}
+        version: >-
+          {{ (oracle_java_effective_version is search(".*u.*"))
+             | ternary("1."
+                       + oracle_java_effective_version_major
+                       + ".0_"
+                       + oracle_java_effective_version
+                         | regex_replace(".*u(.*)", "\1"),
+                       oracle_java_effective_version) }}
+        arch: >-
+          {{ (oracle_java_effective_version is search(".*u.*"))
+             | ternary((ansible_facts.architecture == "x86_64")
+                       | ternary("-amd64", "-i586"),
+                       "") }}
+        java_path: >-
+          {{ oracle_java_base_dir
+             + "/jdk"
+             + separator
+             + version
+             + arch
+             + "/bin/java" }}
+
+    - name: download oracle java package
+      include_role:
+        name: amtega.artifact
+      vars:
+        override:
+          download: "{{ not oracle_java_check_installed_result.stat.exists }}"
+        artifact: "{{ oracle_java_artifact | combine(override) }}"
+  when:
+    - oracle_java_state == "present"
+    - oracle_java_accept_license
+  tags:
+    - role::oracle_java
+    - role::oracle_java::download

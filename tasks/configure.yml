@@ -1,0 +1,57 @@
+---
+# Role configure tasks
+
+- block:
+    - name: search installed oracle java packages
+      shell: "rpm -qa | grep jdk | grep {{ pattern }}"
+      args:
+        warn: false
+      register: oracle_java_search_rpm_result
+      changed_when: false
+      failed_when: false
+      vars:
+        pattern: >-
+          {{ (oracle_java_effective_version is search(".*u.*"))
+             | ternary(oracle_java_effective_version
+                       | regex_replace("(.*)u(.*)", "jdk.*1.\1.*_\2"),
+                       oracle_java_effective_version
+                       | regex_replace("(.*)", "jdk-\1")) }}
+
+    - name: search oracle java binaries
+      shell: >-
+        rpm -ql {{ oracle_java_search_rpm_result.stdout }} | grep "/bin/"
+      args:
+        warn: false
+      register: oracle_java_search_binaries_result
+      changed_when: false
+      when: oracle_java_search_rpm_result.rc == 0
+
+    - block:
+        - name: setup fact with the oracle java home
+          set_fact:
+            oracle_java_home: "{{ java_home }}"
+          vars:
+            java_home: >-
+              {{ oracle_java_search_binaries_result.stdout_lines
+                 | select("search", "^.*/bin/java$")
+                 | list
+                 | first
+                 | regex_replace("^(.*)/bin/java$", "\1") }}
+
+        - name: setup alternatives to oracle java
+          alternatives:
+            name: "{{ item | basename }}"
+            link: "/usr/bin/{{ item | basename }}"
+            path: "{{ item }}"
+          when: oracle_java_update_alternatives
+          loop: "{{ oracle_java_alternatives }}"
+          loop_control:
+            label: "{{ item | basename }}"
+      when:
+        - not oracle_java_search_binaries_result is skipped
+        - oracle_java_state == "present"
+  when:
+    - oracle_java_accept_license
+  tags:
+    - role::oracle_java
+    - role::oracle_java::configure

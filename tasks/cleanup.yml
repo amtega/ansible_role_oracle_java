@@ -1,0 +1,13 @@
+---
+# Role cleanup tasks
+
+- name: remove oracle java package
+  file:
+    path: "{{ oracle_java_package }}"
+    state: absent
+  when:
+    - oracle_java_remove_artifact
+    - oracle_java_package | length > 0
+  tags:
+    - role::oracle_java
+    - role::oracle_java::cleanup

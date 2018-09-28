@@ -1,0 +1,14 @@
+---
+# Role install tasks
+
+- name: install oracle java package
+  package:
+    name: "{{ oracle_java_package }}"
+    state: present
+  when:
+    - oracle_java_state == "present"
+    - oracle_java_accept_license
+    - not oracle_java_check_installed_result.stat.exists
+  tags:
+    - role::oracle_java
+    - role::oracle_java::install

@@ -1,2 +1,49 @@
 ---
 # Role default lower priority variables
+
+# State of oracle java. Can be present or absent
+
+oracle_java_state: present
+
+# Accept or not Oracle Binary Code License Agreement for Java SE. You must
+# explicitly set this variable to true to deploy oracle java
+
+oracle_java_accept_license: false
+
+# Version of oracle java to deploy. You can use the keyword latest to install
+# the latest available version
+
+oracle_java_version: latest
+
+# Manage symbolic links using the `alternatives` module
+
+oracle_java_update_alternatives: true
+
+# The role will try to identify the java artifact to download from the official
+# site, but Oracle only allows public download (without signin in their portal)
+# for the latest versions of java (listed in
+# https://www.oracle.com/technetwork/java/javase/downloads/index.html)
+#
+# If you want to download an older version yo need to configure the
+# `oracle_java_artifact` variable to point to a local/public repository that
+# contains the required artifact
+#
+# Take a look to `amtega.artifact` role documentation to known about supported
+# types of artifacts, their specific settings and how to configure a proxy if
+# necessary
+
+oracle_java_artifact:
+    id: oracle_java
+    type: https
+    host: "{{ oracle_java_official_download_host }}"
+    path: "{{ oracle_java_official_download_path }}"
+    file: "{{ oracle_java_official_download_file }}"
+    dest: /tmp
+    headers:
+      cookie: "oraclelicense=accept-securebackup-cookie"
+    timeout: 120
+    validate_certs: yes
+
+# Remove or not downloaded redistributable after install
+
+oracle_java_remove_artifact: true
