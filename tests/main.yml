@@ -1,2 +1,86 @@
 ---
 # Tasks for testing role
+
+- name: configure docker sandbox environment
+  hosts: localhost
+  roles:
+    - role: amtega.docker_presets
+      docker_presets_images_json_query: >-
+        [? starts_with(name, `centos-6`)
+           || starts_with(name, `centos-7`)
+           || starts_with(name, `fedora-27`)
+           || starts_with(name, `fedora-28`) ]
+  tags:
+    - sandbox
+
+- name: run idempotence test
+  hosts: localhost
+  roles:
+    - role: amtega.docker_sandbox
+      docker_sandbox_state: started
+  tags:
+    - sandbox
+
+- name: test oracle_java role
+  hosts: docker_sandbox_containers
+  roles:
+    - amtega.oracle_java
+  vars:
+      oracle_java_state: present
+      oracle_java_version: latest
+      oracle_java_accept_license: true
+      oracle_java_remove_artifact: false
+  tasks:
+    - name: check oracle java download
+      stat:
+        path: "{{ artifact_result_oracle_java.download_path }}"
+      register: check_download_result
+
+    - name: check oracle java install
+      stat:
+        path: "{{ oracle_java_home }}/bin/java"
+      register: check_install_result
+
+    - name: check that oracle java was downloaded and installed
+      assert:
+        that:
+          - >-
+            artifact_result_oracle_java is defined
+            and check_download_result.stat.exists
+          - check_install_result.stat.exists
+  tags:
+    - idempotence
+
+- name: test oracle_java role absent state
+  hosts: docker_sandbox_containers
+  roles:
+    - amtega.oracle_java
+  vars:
+      oracle_java_state: absent
+      oracle_java_version: latest
+      oracle_java_accept_license: true
+      oracle_java_remove_artifact: true
+  tasks:
+    - name: check oracle java download
+      stat:
+        path: "{{ artifact_result_oracle_java.download_path }}"
+      register: check_download_result
+
+    - name: check oracle java install
+      stat:
+        path: "{{ oracle_java_home }}/bin/java"
+      register: check_install_result
+
+    - name: check that oracle java was uninstalled
+      assert:
+        that:
+          - not check_download_result.stat.exists
+          - not check_install_result.stat.exists
+#
+# - name: cleanup docker sandbox
+#   hosts: localhost
+#   roles:
+#     - role: amtega.docker_sandbox
+#       docker_sandbox_state: absent
+#   tags:
+#     - sandbox

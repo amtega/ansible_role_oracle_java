@@ -1,0 +1,21 @@
+{% set oracle_java_download_site_url_list = oracle_java_java_main_site_content
+                                            | select("search", "<h.*>.*jdk.*-downloads.*Java SE.*</h.*>")
+                                            | select("search", "Java SE "+ oracle_java_effective_version)
+                                            | list %}
+{% if oracle_java_download_site_url_list | length > 0 %}
+{% set oracle_java_download_site_url = oracle_java_download_site_url_list
+                                       | first
+                                       | regex_replace('.*href="(.*\\.html)".*', '\\1') %}
+{% set oracle_java_download_site_content = lookup("url",
+                                                  oracle_java_site
+                                                  + oracle_java_download_site_url,
+                                                  wantlist=True) %}
+{% set oracle_java_download_url_list = oracle_java_download_site_content
+                                       | select("search", "jdk-" + oracle_java_effective_version + ".*.rpm")
+                                       | list %}
+{% if oracle_java_download_url_list | length > 0 %}
+{{ oracle_java_download_url_list
+   | first
+   | regex_replace('.*"filepath":"(.*)(\\.rpm)".*', '\\1\\2') }}
+{% endif %}
+{% endif %}

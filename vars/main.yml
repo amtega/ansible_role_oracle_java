@@ -1,2 +1,77 @@
 ---
 # Role variables
+
+# Supported distributions
+
+oracle_java_supported_distributions:
+  - centos
+  - fedora
+  - rhel
+
+# Supported distributions versions
+
+oracle_java_supported_versions:
+  centos: 6
+  fedora: 27
+  rhel: 7
+
+# Effective version to deploy
+
+oracle_java_effective_version: >-
+  {{ (oracle_java_version == "latest")
+     | ternary(oracle_java_latest_versions | first,
+               oracle_java_version) }}
+
+oracle_java_effective_version_major: >-
+  {{ (oracle_java_effective_version is search(".*u.*"))
+     | ternary(oracle_java_effective_version
+               | regex_replace("(.*)u(.*)", "\1"),
+               oracle_java_effective_version.split(".")
+               | first) }}
+
+# Oracle java site
+
+oracle_java_site: https://www.oracle.com
+
+oracle_java_java_main_site: >-
+  {{ oracle_java_site }}/technetwork/java/javase/downloads/index.html
+
+oracle_java_java_main_site_content: >-
+  {{ lookup("url", oracle_java_java_main_site, wantlist=True) }}
+
+oracle_java_latest_versions: >-
+ {{ oracle_java_java_main_site_content
+    | select("search", "<h.*>.*jdk.*-downloads.*Java SE.*</h.*>")
+    | map("regex_replace", ".*<a name.*Java SE ([0-9\.u]*).*</a>.*", "\1")
+    | list }}
+
+oracle_java_download_url: >-
+  {{ lookup('template', 'download_url.j2')
+     | regex_replace('\n', '') }}
+
+oracle_java_official_download_host: >-
+  http://{{ oracle_java_download_url | urlsplit('hostname') }}
+
+oracle_java_official_download_path: >-
+  {{ oracle_java_download_url | urlsplit('path') | dirname }}
+
+oracle_java_official_download_file: >-
+  {{ oracle_java_download_url | urlsplit('path') | basename }}
+
+# Oracle java package
+
+oracle_java_package: >-
+  {{ lookup('vars',
+            'artifact_result_'
+            + oracle_java_artifact.id,
+            default='')['download_path'] | default('') }}
+
+# Oracle java alternatives
+
+oracle_java_alternatives:
+  - "{{ oracle_java_home }}/bin/java"
+  - "{{ oracle_java_home }}/bin/javac"
+
+# Oracle java base dir
+
+oracle_java_base_dir: /usr/java
