@@ -2,9 +2,10 @@
 # Role install tasks
 
 - name: install oracle java package
-  package:
+  yum:
     name: "{{ oracle_java_package }}"
     state: present
+    allow_downgrade: yes
   when:
     - oracle_java_state == "present"
     - oracle_java_accept_license
