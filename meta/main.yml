@@ -2,6 +2,7 @@
 # Role dependencies
 
 galaxy_info:
+  role_name: oracle_java
   author: Juan Antonio Valiño García
   description: Deploy Oracle Java
   company: AMTEGA - Xunta de Galicia
