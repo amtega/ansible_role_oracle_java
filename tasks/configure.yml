@@ -2,7 +2,7 @@
 # Role configure tasks
 
 - block:
-    - name: search installed oracle java packages
+    - name: search installed java packages
       shell: "rpm -qa | grep jdk | grep {{ pattern }}"
       args:
         warn: false
@@ -17,7 +17,7 @@
                        oracle_java_effective_version
                        | regex_replace("(.*)", "jdk-\1")) }}
 
-    - name: search oracle java binaries
+    - name: search java binaries
       shell: >-
         rpm -ql {{ oracle_java_search_rpm_result.stdout }} | grep "/bin/"
       args:
@@ -43,15 +43,15 @@
             name: "{{ item | basename }}"
             link: "/usr/bin/{{ item | basename }}"
             path: "{{ item }}"
-          when: oracle_java_update_alternatives
           loop: "{{ oracle_java_alternatives }}"
           loop_control:
             label: "{{ item | basename }}"
-      when:
-        - not oracle_java_search_binaries_result is skipped
-        - oracle_java_state == "present"
+          when: oracle_java_state == "present"
+      when: not oracle_java_search_binaries_result is skipped
+
   when:
     - oracle_java_accept_license
+    - oracle_java_update_alternatives
   tags:
     - role::oracle_java
     - role::oracle_java::configure
