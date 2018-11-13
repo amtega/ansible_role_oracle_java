@@ -1,20 +1,6 @@
 ---
 # Role variables
 
-# Supported distributions
-
-oracle_java_supported_distributions:
-  - centos
-  - fedora
-  - rhel
-
-# Supported distributions versions
-
-oracle_java_supported_versions:
-  centos: 6
-  fedora: 27
-  rhel: 7
-
 # Effective version to deploy
 
 oracle_java_effective_version: >-
