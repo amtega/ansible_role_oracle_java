@@ -2,13 +2,16 @@
 # Role uninstall tasks
 
 - block:
-    # Yum is used here instead of `package` module because seems that in fedora
-    # 27/28 sometimes `package` seems not to remove returning `Nothing to do`
+    # rpm is used here instead of `package` module because seems that in fedora
+    # 27/28 this module does not remove the package and returns `Nothing to do`
 
     - name: uninstall oracle java package
-      yum:
-        name: "{{ oracle_java_search_rpm_result.stdout }}"
-        state: absent
+      shell: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"
+      args:
+        warn: false
+      register: oracle_java_uninstall_package_result
+      changed_when: oracle_java_uninstall_package_result.rc == 0
+      failed_when: oracle_java_uninstall_package_result.rc == 1
       when: oracle_java_search_rpm_result.rc == 0
 
     - name: remove alternatives to oracle java binaries
