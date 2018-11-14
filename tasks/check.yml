@@ -2,16 +2,6 @@
 # Role check tasks
 
 - block:
-    - name: assert platform is supported
-      assert:
-        that:
-          - distribution in oracle_java_supported_distributions
-          - >-
-            ansible_facts.distribution_version
-            is version(oracle_java_supported_versions[distribution], ">=")
-      vars:
-        distribution: "{{ ansible_facts.distribution | lower }}"
-
     - name: assert oracle license accepted
       assert:
         that:
