@@ -76,11 +76,12 @@
         that:
           - not check_download_result.stat.exists
           - not check_install_result.stat.exists
-#
-# - name: cleanup docker sandbox
-#   hosts: localhost
-#   roles:
-#     - role: amtega.docker_sandbox
-#       docker_sandbox_state: absent
-#   tags:
-#     - sandbox
+
+- name: cleanup docker sandbox
+  hosts: localhost
+  roles:
+    - role: amtega.docker_sandbox
+      docker_sandbox_state: absent
+  tags:
+    - cleanup
+    - sandbox
