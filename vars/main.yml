@@ -47,10 +47,7 @@ oracle_java_official_download_file: >-
 # Oracle java package
 
 oracle_java_package: >-
-  {{ lookup('vars',
-            'artifact_result_'
-            + oracle_java_artifact.id,
-            default='')['download_path'] | default('') }}
+  {{ artifact_result[oracle_java_artifact.id].download_path | default('') }}
 
 # Oracle java alternatives
 
