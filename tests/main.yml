@@ -33,7 +33,7 @@
   tasks:
     - name: check oracle java download
       stat:
-        path: "{{ artifact_result_oracle_java.download_path }}"
+        path: "{{ artifact_result.oracle_java.download_path }}"
       register: check_download_result
 
     - name: check oracle java install
@@ -45,7 +45,7 @@
       assert:
         that:
           - >-
-            artifact_result_oracle_java is defined
+            artifact_result.oracle_java is defined
             and check_download_result.stat.exists
           - check_install_result.stat.exists
   tags:
@@ -63,7 +63,7 @@
   tasks:
     - name: check oracle java download
       stat:
-        path: "{{ artifact_result_oracle_java.download_path }}"
+        path: "{{ artifact_result.oracle_java.download_path }}"
       register: check_download_result
 
     - name: check oracle java install
