@@ -1,7 +1,7 @@
 ---
 # Role install tasks
 
-- name: install oracle java package
+- name: Install oracle java package
   yum:
     name: "{{ oracle_java_package }}"
     state: present

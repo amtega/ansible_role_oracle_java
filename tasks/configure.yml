@@ -2,7 +2,7 @@
 # Role configure tasks
 
 - block:
-    - name: search installed java packages
+    - name: Search installed java packages
       shell: "rpm -qa | grep jdk | grep {{ pattern }}"
       args:
         warn: false
@@ -17,7 +17,7 @@
                        oracle_java_effective_version
                        | regex_replace("(.*)", "jdk-\1")) }}
 
-    - name: search java binaries
+    - name: Search java binaries
       shell: >-
         rpm -ql {{ oracle_java_search_rpm_result.stdout }} | grep "/bin/"
       args:
@@ -27,7 +27,7 @@
       when: oracle_java_search_rpm_result.rc == 0
 
     - block:
-        - name: setup fact with the oracle java home
+        - name: Setup fact with the oracle java home
           set_fact:
             oracle_java_home: "{{ java_home }}"
           vars:
@@ -38,7 +38,7 @@
                  | first
                  | regex_replace("^(.*)/bin/java$", "\1") }}
 
-        - name: setup alternatives to oracle java
+        - name: Setup alternatives to oracle java
           alternatives:
             name: "{{ item | basename }}"
             link: "/usr/bin/{{ item | basename }}"
