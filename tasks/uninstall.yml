@@ -6,7 +6,7 @@
     # 27/28 this module does not remove the package and returns `Nothing to do`
 
     - name: uninstall oracle java package
-      shell: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"
+      command: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"
       args:
         warn: false
       register: oracle_java_uninstall_package_result
@@ -15,7 +15,7 @@
       when: oracle_java_search_rpm_result.rc == 0
 
     - name: remove alternatives to oracle java binaries
-      shell: >-
+      command: >-
         update-alternatives
         --remove {{ item | basename }}
         {{ item }}
