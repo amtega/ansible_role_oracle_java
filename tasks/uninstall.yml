@@ -5,7 +5,7 @@
     # rpm is used here instead of `package` module because seems that in fedora
     # 27/28 this module does not remove the package and returns `Nothing to do`
 
-    - name: uninstall oracle java package
+    - name: Uninstall oracle java package
       command: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"
       args:
         warn: false
@@ -14,7 +14,7 @@
       failed_when: oracle_java_uninstall_package_result.rc == 1
       when: oracle_java_search_rpm_result.rc == 0
 
-    - name: remove alternatives to oracle java binaries
+    - name: Remove alternatives to oracle java binaries
       command: >-
         update-alternatives
         --remove {{ item | basename }}

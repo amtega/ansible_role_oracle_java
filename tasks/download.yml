@@ -2,7 +2,7 @@
 # Role download tasks
 
 - block:
-    - name: check if oracle java is installed
+    - name: Check if oracle java is installed
       stat:
         path: "{{ java_path }}"
       register: oracle_java_check_installed_result
@@ -31,7 +31,7 @@
              + arch
              + "/bin/java" }}
 
-    - name: download oracle java package
+    - name: Download oracle java package
       include_role:
         name: amtega.artifact
       vars:

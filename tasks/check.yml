@@ -2,12 +2,12 @@
 # Role check tasks
 
 - block:
-    - name: assert oracle license accepted
+    - name: Assert oracle license accepted
       assert:
         that:
           - oracle_java_accept_license
 
-    - name: assert download artifact is valid
+    - name: Assert download artifact is valid
       assert:
         that:
           - >-

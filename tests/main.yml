@@ -1,7 +1,7 @@
 ---
 # Tasks for testing role
 
-- name: configure docker sandbox environment
+- name: Configure docker sandbox environment
   hosts: localhost
   roles:
     - role: amtega.docker_presets
@@ -13,7 +13,7 @@
   tags:
     - sandbox
 
-- name: run idempotence test
+- name: Run idempotence test
   hosts: localhost
   roles:
     - role: amtega.docker_sandbox
@@ -21,7 +21,7 @@
   tags:
     - sandbox
 
-- name: test oracle_java role
+- name: Test oracle_java role
   hosts: docker_sandbox_containers
   roles:
     - amtega.oracle_java
@@ -31,17 +31,17 @@
       oracle_java_accept_license: true
       oracle_java_remove_artifact: false
   tasks:
-    - name: check oracle java download
+    - name: Check oracle java download
       stat:
         path: "{{ artifact_result.oracle_java.download_path }}"
       register: check_download_result
 
-    - name: check oracle java install
+    - name: Check oracle java install
       stat:
         path: "{{ oracle_java_home }}/bin/java"
       register: check_install_result
 
-    - name: check that oracle java was downloaded and installed
+    - name: Check that oracle java was downloaded and installed
       assert:
         that:
           - >-
@@ -51,7 +51,7 @@
   tags:
     - idempotence
 
-- name: test oracle_java role absent state
+- name: Test oracle_java role absent state
   hosts: docker_sandbox_containers
   roles:
     - amtega.oracle_java
@@ -61,23 +61,23 @@
       oracle_java_accept_license: true
       oracle_java_remove_artifact: true
   tasks:
-    - name: check oracle java download
+    - name: Check oracle java download
       stat:
         path: "{{ artifact_result.oracle_java.download_path }}"
       register: check_download_result
 
-    - name: check oracle java install
+    - name: Check oracle java install
       stat:
         path: "{{ oracle_java_home }}/bin/java"
       register: check_install_result
 
-    - name: check that oracle java was uninstalled
+    - name: Check that oracle java was uninstalled
       assert:
         that:
           - not check_download_result.stat.exists
           - not check_install_result.stat.exists
 
-- name: cleanup docker sandbox
+- name: Cleanup docker sandbox
   hosts: localhost
   roles:
     - role: amtega.docker_sandbox
