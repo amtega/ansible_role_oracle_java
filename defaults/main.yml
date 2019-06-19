@@ -6,9 +6,9 @@
 oracle_java_state: present
 
 # Accept or not Oracle Binary Code License Agreement for Java SE. You must
-# explicitly set this variable to true to deploy oracle java
+# explicitly set this variable to yes to deploy oracle java
 
-oracle_java_accept_license: false
+oracle_java_accept_license: no
 
 # Version of oracle java to deploy. You can use the keyword latest to install
 # the latest available version
@@ -17,7 +17,7 @@ oracle_java_version: latest
 
 # Manage symbolic links using the `alternatives` module
 
-oracle_java_update_alternatives: true
+oracle_java_update_alternatives: yes
 
 # The role will try to identify the java artifact to download from the official
 # site, but Oracle only allows public download (without signin in their portal)
@@ -46,4 +46,4 @@ oracle_java_artifact:
 
 # Remove or not downloaded redistributable after install
 
-oracle_java_remove_artifact: true
+oracle_java_remove_artifact: yes

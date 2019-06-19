@@ -8,7 +8,7 @@
     - name: Uninstall oracle java package
       command: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"
       args:
-        warn: false
+        warn: no
       register: oracle_java_uninstall_package_result
       changed_when: oracle_java_uninstall_package_result.rc == 0
       failed_when: oracle_java_uninstall_package_result.rc == 1
@@ -21,7 +21,7 @@
         {{ item }}
       register: oracle_java_remove_alternatives_result
       changed_when: oracle_java_remove_alternatives_result.rc == 0
-      failed_when: false
+      failed_when: no
       when:
         - oracle_java_update_alternatives
         - not oracle_java_search_binaries_result is skipped

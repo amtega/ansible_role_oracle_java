@@ -5,11 +5,12 @@
   hosts: localhost
   roles:
     - role: amtega.docker_presets
-      docker_presets_images_json_query: >-
-        [? starts_with(name, `centos-6`)
-           || starts_with(name, `centos-7`)
-           || starts_with(name, `fedora-27`)
-           || starts_with(name, `fedora-28`) ]
+      vars:
+        docker_presets_images_json_query: >-
+          [? starts_with(name, `centos-6`)
+             || starts_with(name, `centos-7`)
+             || starts_with(name, `fedora-27`)
+             || starts_with(name, `fedora-28`) ]
   tags:
     - sandbox
 
@@ -28,8 +29,8 @@
   vars:
       oracle_java_state: present
       oracle_java_version: latest
-      oracle_java_accept_license: true
-      oracle_java_remove_artifact: false
+      oracle_java_accept_license: yes
+      oracle_java_remove_artifact: no
   tasks:
     - name: Check oracle java download
       stat:
@@ -58,8 +59,8 @@
   vars:
       oracle_java_state: absent
       oracle_java_version: latest
-      oracle_java_accept_license: true
-      oracle_java_remove_artifact: true
+      oracle_java_accept_license: yes
+      oracle_java_remove_artifact: yes
   tasks:
     - name: Check oracle java download
       stat:
@@ -81,7 +82,8 @@
   hosts: localhost
   roles:
     - role: amtega.docker_sandbox
-      docker_sandbox_state: absent
+      vars:
+        docker_sandbox_state: absent
   tags:
     - cleanup
     - sandbox
