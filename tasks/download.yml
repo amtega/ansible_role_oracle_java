@@ -40,7 +40,7 @@
         artifact: "{{ oracle_java_artifact | combine(override) }}"
   when:
     - oracle_java_state == "present"
-    - oracle_java_accept_license
+    - oracle_java_accept_license | bool
   tags:
     - role::oracle_java
     - role::oracle_java::download

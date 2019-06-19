@@ -23,8 +23,8 @@ This is an example playbook:
   vars:
     oracle_java_state: present
     oracle_java_version: latest
-    oracle_java_accept_license: true
-    oracle_java_remove_artifact: false
+    oracle_java_accept_license: yes
+    oracle_java_remove_artifact: no
 ```
 
 ## Testing

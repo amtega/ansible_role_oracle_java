@@ -5,10 +5,10 @@
     - name: Search installed java packages
       shell: "rpm -qa | grep jdk | grep {{ pattern }}"
       args:
-        warn: false
+        warn: no
       register: oracle_java_search_rpm_result
-      changed_when: false
-      failed_when: false
+      changed_when: no
+      failed_when: no
       vars:
         pattern: >-
           {{ (oracle_java_effective_version is search(".*u.*"))
@@ -21,9 +21,9 @@
       shell: >-
         rpm -ql {{ oracle_java_search_rpm_result.stdout }} | grep "/bin/"
       args:
-        warn: false
+        warn: no
       register: oracle_java_search_binaries_result
-      changed_when: false
+      changed_when: no
       when: oracle_java_search_rpm_result.rc == 0
 
     - block:
@@ -50,8 +50,8 @@
       when: not oracle_java_search_binaries_result is skipped
 
   when:
-    - oracle_java_accept_license
-    - oracle_java_update_alternatives
+    - oracle_java_accept_license | bool
+    - oracle_java_update_alternatives | bool
   tags:
     - role::oracle_java
     - role::oracle_java::configure
