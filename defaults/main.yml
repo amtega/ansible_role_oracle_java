@@ -32,17 +32,8 @@ oracle_java_update_alternatives: yes
 # types of artifacts, their specific settings and how to configure a proxy if
 # necessary
 
-oracle_java_artifact:
-    id: oracle_java
-    type: https
-    host: "{{ oracle_java_official_download_host }}"
-    path: "{{ oracle_java_official_download_path }}"
-    file: "{{ oracle_java_official_download_file }}"
-    dest: /tmp
-    headers:
-      cookie: "oraclelicense=accept-securebackup-cookie"
-    timeout: 120
-    validate_certs: yes
+#oracle_java_artifact:
+
 
 # Remove or not downloaded redistributable after install
 
