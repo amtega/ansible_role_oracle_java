@@ -5,7 +5,7 @@
 # ..." error messages when using yum/dnf
 
 - name: Install oracle java package
-  command: "rpm -U {{ oracle_java_package }}"
+  command: "rpm -U {{ oracle_java_package }} --nodeps"
   args:
     warn: no
   when:
