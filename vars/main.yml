@@ -23,17 +23,22 @@ oracle_java_java_main_site: >-
   {{ oracle_java_site }}/technetwork/java/javase/downloads/index.html
 
 oracle_java_java_main_site_content: >-
-  {{ lookup("url", oracle_java_java_main_site, wantlist=True) }}
+  {{ lookup("url", oracle_java_java_main_site, wantlist=False) }}
 
 oracle_java_latest_versions: >-
- {{ oracle_java_java_main_site_content
-    | select("search", "<h.*>.*jdk.*-downloads.*Java SE.*</h.*>")
-    | map("regex_replace", ".*<a name.*Java SE ([0-9\.u]*).*</a>.*", "\1")
-    | list }}
+ {{ (oracle_java_java_main_site_content
+     | regex_replace("<a", "\n")
+     | regex_replace("</a", "\n")).splitlines()
+    | select("search", "Java SE [0-9\.u]+")
+    | reject("search", "Documentation")
+    | map("regex_replace", ".*Java SE ([0-9\.u]+).*", "\1")
+    | list
+    | unique }}
 
 oracle_java_download_url: >-
   {{ lookup('template', 'download_url.j2')
-     | regex_replace('\n', '') }}
+     | regex_replace('\n', '')
+     | trim }}
 
 oracle_java_official_download_host: >-
   http://{{ oracle_java_download_url | urlsplit('hostname') }}
@@ -44,10 +49,26 @@ oracle_java_official_download_path: >-
 oracle_java_official_download_file: >-
   {{ oracle_java_download_url | urlsplit('path') | basename }}
 
+# Oracle java default artifact
+
+oracle_java_default_artifact:
+    id: oracle_java
+    type: https
+    host: "{{ oracle_java_official_download_host }}"
+    path: "{{ oracle_java_official_download_path }}"
+    file: "{{ oracle_java_official_download_file }}"
+    dest: /tmp
+    headers:
+      cookie: "oraclelicense=accept-securebackup-cookie"
+    timeout: 120
+    validate_certs: yes
+
 # Oracle java package
 
 oracle_java_package: >-
-  {{ artifact_result[oracle_java_artifact.id].download_path | default('') }}
+  {{ artifact_result
+    [(oracle_java_artifact | default(oracle_java_default_artifact)).id]
+    .download_path | default('') }}
 
 # Oracle java alternatives
 

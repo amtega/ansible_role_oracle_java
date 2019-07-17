@@ -23,7 +23,7 @@
       changed_when: oracle_java_remove_alternatives_result.rc == 0
       failed_when: no
       when:
-        - oracle_java_update_alternatives
+        - oracle_java_update_alternatives | bool
         - not oracle_java_search_binaries_result is skipped
       loop: "{{ oracle_java_alternatives }}"
       loop_control:

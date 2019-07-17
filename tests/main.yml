@@ -37,6 +37,11 @@
         path: "{{ artifact_result.oracle_java.download_path }}"
       register: check_download_result
 
+    - name: Save oracle java download path for later tests
+      set_fact:
+        oracle_java_download_path: >-
+          {{ artifact_result.oracle_java.download_path }}
+
     - name: Check oracle java install
       stat:
         path: "{{ oracle_java_home }}/bin/java"
@@ -64,7 +69,7 @@
   tasks:
     - name: Check oracle java download
       stat:
-        path: "{{ artifact_result.oracle_java.download_path }}"
+        path: "{{ oracle_java_download_path }}"
       register: check_download_result
 
     - name: Check oracle java install

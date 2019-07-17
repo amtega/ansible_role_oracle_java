@@ -11,10 +11,8 @@
       assert:
         that:
           - >-
-            oracle_java_effective_version in oracle_java_latest_versions
-            or (oracle_java_effective_version
-                not in oracle_java_latest_versions
-                and oracle_java_artifact.file | length > 0)
+            oracle_java_artifact is defined
+            or oracle_java_effective_version in oracle_java_latest_versions
   tags:
     - role::oracle_java
     - role::oracle_java::check
