@@ -13,9 +13,8 @@
         pattern: >-
           {{ (oracle_java_effective_version is search(".*u.*"))
              | ternary(oracle_java_effective_version
-                       | regex_replace("(.*)u(.*)", "jdk.*1.\1.*_\2"),
-                       oracle_java_effective_version
-                       | regex_replace("(.*)", "jdk-\1")) }}
+                       | regex_replace("(.*)u(.*)", "1.\1.*_\2"),
+                       oracle_java_effective_version) }}
 
     - name: Search java binaries
       shell: >-
@@ -46,12 +45,11 @@
           loop: "{{ oracle_java_alternatives }}"
           loop_control:
             label: "{{ item | basename }}"
-          when: oracle_java_state == "present"
+          when:
+            - oracle_java_state == "present"
+            - oracle_java_update_alternatives | bool
       when: not oracle_java_search_binaries_result is skipped
-
-  when:
-    - oracle_java_accept_license | bool
-    - oracle_java_update_alternatives | bool
+  when: oracle_java_accept_license | bool
   tags:
     - role::oracle_java
     - role::oracle_java::configure
