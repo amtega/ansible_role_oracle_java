@@ -2,9 +2,15 @@
 # Role cleanup tasks
 
 - name: Remove oracle java package
-  file:
-    path: "{{ oracle_java_package }}"
-    state: absent
+  include_role:
+    name: amtega.artifact
+  vars:
+    override:
+      state: absent
+    artifact: >-
+      {{ oracle_java_artifact
+         | default(oracle_java_default_artifact)
+         | combine(override) }}
   when:
     - oracle_java_remove_artifact | bool
     - oracle_java_package | length > 0
