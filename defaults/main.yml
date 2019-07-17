@@ -34,7 +34,6 @@ oracle_java_update_alternatives: yes
 
 #oracle_java_artifact:
 
-
 # Remove or not downloaded redistributable after install
 
 oracle_java_remove_artifact: yes
