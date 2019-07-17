@@ -37,6 +37,7 @@
       vars:
         override:
           download: "{{ not oracle_java_check_installed_result.stat.exists }}"
+          force: yes
         artifact: >-
           {{ oracle_java_artifact
              | default(oracle_java_default_artifact)
