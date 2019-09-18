@@ -29,8 +29,6 @@ dependencies:
         centos: 6
         fedora: 29
         rhel: 6
-    tags:
-      - role::oracle_java
 
   - role: amtega.artifact
     tags:
