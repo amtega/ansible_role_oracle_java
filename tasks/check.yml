@@ -7,12 +7,11 @@
         that:
           - oracle_java_accept_license | bool
 
-    - name: Assert download artifact is valid
+    - name: Assert version to download is valid
       assert:
         that:
-          - >-
-            oracle_java_artifact is defined
-            or oracle_java_effective_version in oracle_java_latest_versions
+          oracle_java_effective_version in oracle_java_latest_versions
+      when: oracle_java_artifact is undefined
   tags:
     - role::oracle_java
     - role::oracle_java::check
