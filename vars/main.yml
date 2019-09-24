@@ -38,20 +38,6 @@ oracle_java_official_download_path: >-
 oracle_java_official_download_file: >-
   {{ oracle_java_download_url | urlsplit('path') | basename }}
 
-# Oracle java default artifact
-
-oracle_java_default_artifact:
-    id: oracle_java
-    type: https
-    host: "{{ oracle_java_official_download_host }}"
-    path: "{{ oracle_java_official_download_path }}"
-    file: "{{ oracle_java_official_download_file }}"
-    dest: /tmp
-    headers:
-      cookie: "oraclelicense=accept-securebackup-cookie"
-    timeout: 120
-    validate_certs: yes
-
 # Oracle java package
 
 oracle_java_package: >-
