@@ -41,6 +41,7 @@
         artifact: >-
           {{ oracle_java_artifact
              | default(oracle_java_default_artifact)
+             | default({})
              | combine(override) }}
   when:
     - oracle_java_state == "present"
