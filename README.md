@@ -9,8 +9,9 @@ A list of all the default variables for this role is available in `defaults/main
 The role setups the following facts:
 
 - `oracle_java_home`: home path of the deployed oracle java
-- `oracle_java_latest_versions`: list of strings with the oracle java latest versions. Only available when download artifact is not defined or latest version is required.
-- `oracle_java_latest_versions`: string with the oracle java latest version. Only available when download artifact is not defined or latest version is required.
+- `oracle_java_latest_versions`: list of strings with the oracle java latest versions. Only available when download artifact is not defined or latest version is required to be installed.
+- `oracle_java_latest_versions`: string with the oracle java latest version. Only available when download artifact is not defined or latest version is required to be installed.
+- `oracle_java_default_artifact`: dict with the default artifact for downloading oracle java. Only available when download artifact is not defined or latest version is required to be installed.
 
 ## Example Playbook
 
