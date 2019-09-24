@@ -7,6 +7,26 @@
         that:
           - oracle_java_accept_license | bool
 
+    - name: Setup oracle java latest versions info
+      when: >-
+        oracle_java_version == "latest"
+        or oracle_java_artifact is undefined
+      set_fact:
+         oracle_java_latest_versions: "{{ latest_versions }}"
+
+         oracle_java_latest_version: >-
+           {{ latest_versions | first }}
+      vars:
+        latest_versions: >-
+          {{ (oracle_java_java_main_site_content
+              | regex_replace("<a", "\n")
+              | regex_replace("</a", "\n")).splitlines()
+             | select("search", "Java SE [0-9\.u]+")
+             | reject("search", "Documentation")
+             | map("regex_replace", ".*Java SE ([0-9\.u]+).*", "\1")
+             | list
+             | unique }}
+
     - name: Assert version to download is valid
       assert:
         that:
