@@ -19,8 +19,7 @@ This is an example playbook:
 
 ``` yaml
 ---
-- name: oracle java role sample
-  hosts: localhost
+- hosts: localhost
   roles:  
     - amtega.oracle_java
   vars:
