@@ -1,0 +1,17 @@
+---
+# Role artifact tasks
+
+- name: Download oracle java package
+  include_role:
+    name: amtega.artifact
+  when: not oracle_java_check_installed_result.stat.exists
+  vars:
+    override:
+      download: "{{ not oracle_java_check_installed_result.stat.exists }}"
+      force: yes
+      no_log: no
+    artifact: >-
+      {{ oracle_java_artifact
+         | default(oracle_java_default_artifact)
+         | default({})
+         | combine(override) }}

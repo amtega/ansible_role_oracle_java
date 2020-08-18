@@ -1,0 +1,9 @@
+---
+
+- name: Prepare
+  hosts: molecule_hosts
+  gather_facts: no
+  roles:
+    - role: amtega.oracle_java
+      vars:
+        oracle_java_state: present
