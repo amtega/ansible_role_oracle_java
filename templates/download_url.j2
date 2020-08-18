@@ -1,13 +1,17 @@
 {% set oracle_java_download_site_url_list = (oracle_java_java_main_site_content
                                              | regex_replace("<a", "\n")
                                              | regex_replace("</a", "\n")).splitlines()
-                                            | select("search", "Java SE "+ oracle_java_effective_version)
-                                            | select("search", ".*jdk.*-downloads-.*")
-                                            | list %}                                            
+                                            | select("search",
+                                                     ".*jdk"
+                                                     + oracle_java_effective_version.split(".")
+                                                       | first
+                                                       | regex_replace("([0-9]+)u.*", "\\1")
+                                                     + "-downloads.*")
+                                            | list %}
 {% if oracle_java_download_site_url_list | length > 0 %}
 {% set oracle_java_download_site_url = oracle_java_download_site_url_list
                                        | first
-                                       | regex_replace('.*href="(.*\\.html)".*', '\\1') %}
+                                       | regex_replace(".*href=.(.*\.html).*", "\\1") %}
 {% set oracle_java_download_site_content = lookup("url",
                                                   oracle_java_site
                                                   + oracle_java_download_site_url,
@@ -15,9 +19,10 @@
 {% set oracle_java_download_url_list = oracle_java_download_site_content
                                        | select("search", "jdk-" + oracle_java_effective_version + ".*.rpm")
                                        | list %}
+
 {% if oracle_java_download_url_list | length > 0 %}
-{{ oracle_java_download_url_list
+https:{{ oracle_java_download_url_list
    | first
-   | regex_replace('.*"filepath":"(.*)(\\.rpm)".*', '\\1\\2') }}
+   | regex_replace(".*data-file='(.*\.rpm)'.*", "\\1") }}
 {% endif %}
 {% endif %}
