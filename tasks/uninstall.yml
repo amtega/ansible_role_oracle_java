@@ -3,7 +3,7 @@
 
 - block:
     # rpm is used here instead of `package` module because seems that in fedora
-    # 27/28 this module does not remove the package and returns `Nothing to do`
+    # this module does not remove the package and returns `Nothing to do`
 
     - name: Uninstall oracle java package
       command: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"

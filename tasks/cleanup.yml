@@ -11,9 +11,6 @@
       {{ oracle_java_artifact
          | default(oracle_java_default_artifact)
          | combine(override) }}
-  when:
-    - oracle_java_remove_artifact | bool
-    - oracle_java_package | length > 0
   tags:
     - role::oracle_java
     - role::oracle_java::cleanup

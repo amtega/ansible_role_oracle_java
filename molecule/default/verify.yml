@@ -1,0 +1,15 @@
+---
+
+- name: Verify
+  hosts: molecule_hosts
+  gather_facts: no
+  tasks:
+    - name: Gather java version
+      command: /usr/bin/java -version
+      changed_when: no
+      register: check_java_result
+
+    - name: Assert java is installed
+      assert:
+        that: >-
+          check_java_result.stderr is search("Java.* SE Runtime Environment")

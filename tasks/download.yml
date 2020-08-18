@@ -31,18 +31,7 @@
              + arch
              + "/bin/java" }}
 
-    - name: Download oracle java package
-      include_role:
-        name: amtega.artifact
-      vars:
-        override:
-          download: "{{ not oracle_java_check_installed_result.stat.exists }}"
-          force: yes
-        artifact: >-
-          {{ oracle_java_artifact
-             | default(oracle_java_default_artifact)
-             | default({})
-             | combine(override) }}
+    - include_tasks: artifact.yml
   when:
     - oracle_java_state == "present"
     - oracle_java_accept_license | bool
