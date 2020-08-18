@@ -33,7 +33,7 @@ This is an example playbook:
 Tests are based on [molecule with docker containers](https://molecule.readthedocs.io/en/latest/installation.html).
 
 ```shell
-cd amtega.oracle_jdbc_connector
+cd amtega.oracle_java
 
 molecule test --all
 ```
