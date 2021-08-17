@@ -34,16 +34,16 @@
         - name: Setup fact with oracle default artifact
           set_fact:
             oracle_java_default_artifact:
-                id: oracle_java
-                type: https
-                host: "{{ oracle_java_official_download_host }}"
-                path: "{{ oracle_java_official_download_path }}"
-                file: "{{ oracle_java_official_download_file }}"
-                dest: /tmp
-                headers:
-                  cookie: "oraclelicense=accept-securebackup-cookie"
-                timeout: 120
-                validate_certs: yes
+              id: oracle_java
+              type: https
+              host: "{{ oracle_java_official_download_host }}"
+              path: "{{ oracle_java_official_download_path }}"
+              file: "{{ oracle_java_official_download_file }}"
+              dest: /tmp
+              headers:
+                cookie: "oraclelicense=accept-securebackup-cookie"
+              timeout: 120
+              validate_certs: yes
       when: >-
         oracle_java_version == "latest"
         or oracle_java_artifact is undefined
