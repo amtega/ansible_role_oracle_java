@@ -39,9 +39,9 @@
 
         - name: Setup alternatives to oracle java
           alternatives:
-            name: "{{ item | basename }}"
+            name: "{{ item }}"
             link: "/usr/bin/{{ item | basename }}"
-            path: "{{ item }}"
+            path: "{{ oracle_java_home }}/bin/{{ item }}"
           loop: "{{ oracle_java_alternatives }}"
           loop_control:
             label: "{{ item | basename }}"
