@@ -45,12 +45,6 @@ oracle_java_package: >-
     [(oracle_java_artifact | default(oracle_java_default_artifact)).id]
     .download_path | default('') }}
 
-# Oracle java alternatives
-
-oracle_java_alternatives:
-  - "{{ oracle_java_home }}/bin/java"
-  - "{{ oracle_java_home }}/bin/javac"
-
 # Oracle java base dir
 
 oracle_java_base_dir: /usr/java

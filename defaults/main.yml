@@ -19,6 +19,13 @@ oracle_java_version: latest
 
 oracle_java_update_alternatives: yes
 
+# List of binaries you want manage with `alternatives` module
+
+oracle_java_alternatives:
+  - java
+  - javac
+  - keytool
+
 # The role will try to identify the java artifact to download from the official
 # site, but Oracle only allows public download (without signin in their portal)
 # for the latest versions of java (listed in
