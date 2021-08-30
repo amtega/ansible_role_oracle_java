@@ -17,12 +17,14 @@
                                                   + oracle_java_download_site_url,
                                                   wantlist=True) %}
 {% set oracle_java_download_url_list = oracle_java_download_site_content
+                                       | select("search", "x64")
                                        | select("search", "jdk-" + oracle_java_effective_version + ".*.rpm")
                                        | list %}
 
 {% if oracle_java_download_url_list | length > 0 %}
-https:{{ oracle_java_download_url_list
+{{ oracle_java_download_url_list
    | first
    | regex_replace(".*data-file='(.*\.rpm)'.*", "\\1") }}
 {% endif %}
+
 {% endif %}
