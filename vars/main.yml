@@ -18,25 +18,19 @@ oracle_java_effective_version_major: >-
 
 oracle_java_site: https://www.oracle.com
 
-oracle_java_java_main_site: >-
-  {{ oracle_java_site }}/technetwork/java/javase/downloads/index.html
+oracle_java_latest_versions_url: >-
+  http://javadl-esd-secure.oracle.com/update/baseline.version
 
-oracle_java_java_main_site_content: >-
-  {{ lookup("url", oracle_java_java_main_site, wantlist=False) }}
+oracle_java_latest_versions: >-
+  {{ lookup("url", oracle_java_latest_versions_url, wantlist=True) }}
 
-oracle_java_download_url: >-
-  {{ lookup('template', 'download_url.j2')
-     | regex_replace('\n', '')
-     | trim }}
-
-oracle_java_official_download_host: >-
-  http://{{ oracle_java_download_url | urlsplit('hostname') }}
+oracle_java_official_download_host: https://download.oracle.com
 
 oracle_java_official_download_path: >-
-  {{ oracle_java_download_url | urlsplit('path') | dirname }}
+  /java/{{ oracle_java_effective_version_major}}/archive
 
 oracle_java_official_download_file: >-
-  {{ oracle_java_download_url | urlsplit('path') | basename }}
+  jdk-{{ oracle_java_effective_version }}_linux-x64_bin.rpm
 
 # Oracle java package
 
