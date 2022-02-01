@@ -25,7 +25,6 @@ This is an example playbook:
   vars:
     oracle_java_state: present
     oracle_java_version: latest
-    oracle_java_accept_license: yes
 ```
 
 ## Testing

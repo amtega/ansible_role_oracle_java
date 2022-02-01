@@ -5,11 +5,6 @@
 
 oracle_java_state: present
 
-# Accept or not Oracle Binary Code License Agreement for Java SE. You must
-# explicitly set this variable to yes to deploy oracle java
-
-oracle_java_accept_license: no
-
 # Version of oracle java to deploy. You can use the keyword latest to install
 # the latest available version
 

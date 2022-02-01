@@ -55,7 +55,6 @@ provisioner:
         vars:
           oracle_java_state: present
           oracle_java_version: latest
-          oracle_java_accept_license: yes
       molecule_hosts_fedora:
         vars:
           ansible_python_interpreter: /usr/bin/python3
