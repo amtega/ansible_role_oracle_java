@@ -49,7 +49,6 @@
             - oracle_java_state == "present"
             - oracle_java_update_alternatives | bool
       when: not oracle_java_search_binaries_result is skipped
-  when: oracle_java_accept_license | bool
   tags:
     - role::oracle_java
     - role::oracle_java::configure

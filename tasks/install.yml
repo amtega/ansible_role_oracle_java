@@ -10,7 +10,6 @@
     warn: no
   when:
     - oracle_java_state == "present"
-    - oracle_java_accept_license | bool
     - not oracle_java_check_installed_result.stat.exists
   tags:
     - role::oracle_java

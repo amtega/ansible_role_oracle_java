@@ -8,23 +8,11 @@
         ansible_facts is not defined
         or ansible_facts.architecture is not defined
 
-    - name: Assert oracle license accepted
-      assert:
-        that:
-          - oracle_java_accept_license | bool
-
     - block:
         - name: Setup fact with oracle java latest versions
           set_fact:
             oracle_java_latest_versions: >-
-              {{ (oracle_java_java_main_site_content
-                  | regex_replace("<a", "\n")
-                  | regex_replace("</a", "\n")).splitlines()
-                 | select("search", "Java SE [0-9\.u]+")
-                 | reject("search", "Documentation")
-                 | map("regex_replace", ".*Java SE ([0-9\.u]+).*", "\1")
-                 | list
-                 | unique }}
+              {{ oracle_java_latest_versions }}
 
         - name: Setup fact with oracle java last version
           set_fact:
@@ -40,8 +28,6 @@
               path: "{{ oracle_java_official_download_path }}"
               file: "{{ oracle_java_official_download_file }}"
               dest: /tmp
-              headers:
-                cookie: "oraclelicense=accept-securebackup-cookie"
               timeout: 120
               validate_certs: yes
       when: >-

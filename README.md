@@ -25,7 +25,6 @@ This is an example playbook:
   vars:
     oracle_java_state: present
     oracle_java_version: latest
-    oracle_java_accept_license: yes
 ```
 
 ## Testing
@@ -40,7 +39,7 @@ molecule test --all
 
 ## License
 
-Copyright (C) 2020 AMTEGA - Xunta de Galicia
+Copyright (C) 2022 AMTEGA - Xunta de Galicia
 
 This role is free software: you can redistribute it and/or modify it under the terms of:
 
