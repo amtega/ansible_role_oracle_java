@@ -1,11 +1,7 @@
 ---
 # Role variables
 
-# Effective version to deploy
-
-oracle_java_effective_version: >-
-  {{ (oracle_java_version == "latest")
-     | ternary(oracle_java_latest_version, oracle_java_version) }}
+# Version vars
 
 oracle_java_effective_version_major: >-
   {{ (oracle_java_effective_version is search(".*u.*"))

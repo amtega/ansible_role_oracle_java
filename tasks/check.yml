@@ -18,18 +18,28 @@
           set_fact:
             oracle_java_latest_version: >-
               {{ oracle_java_latest_versions | first }}
+      when: >-
+        oracle_java_version == "latest"
+        or oracle_java_artifact is undefined
 
-        - name: Setup fact with oracle default artifact
-          set_fact:
-            oracle_java_default_artifact:
-              id: oracle_java
-              type: https
-              host: "{{ oracle_java_official_download_host }}"
-              path: "{{ oracle_java_official_download_path }}"
-              file: "{{ oracle_java_official_download_file }}"
-              dest: /tmp
-              timeout: 120
-              validate_certs: yes
+    - name: Setup fact with oracle java effective version
+      set_fact:
+        oracle_java_effective_version: >-
+          {{ (oracle_java_version == "latest")
+             | ternary(oracle_java_latest_version | default(""),
+                       oracle_java_version) }}
+
+    - name: Setup fact with oracle default artifact
+      set_fact:
+        oracle_java_default_artifact:
+          id: oracle_java
+          type: https
+          host: "{{ oracle_java_official_download_host }}"
+          path: "{{ oracle_java_official_download_path }}"
+          file: "{{ oracle_java_official_download_file }}"
+          dest: /tmp
+          timeout: 120
+          validate_certs: yes
       when: >-
         oracle_java_version == "latest"
         or oracle_java_artifact is undefined
