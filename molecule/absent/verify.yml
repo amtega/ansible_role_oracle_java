@@ -5,7 +5,7 @@
   gather_facts: no
   tasks:
     - name: Check java is not installed
-      command: /usr/bin/java -version
+      ansible.builtin.command: /usr/bin/java -version
       changed_when: no
       register: check_java_result
       failed_when: >-

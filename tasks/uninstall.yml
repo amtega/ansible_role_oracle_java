@@ -1,12 +1,13 @@
 ---
-# Role uninstall tasks
 
-- block:
+- name: Uninstall oracle java
+  block:
     # rpm is used here instead of `package` module because seems that in fedora
     # this module does not remove the package and returns `Nothing to do`
 
     - name: Uninstall oracle java package
-      command: "rpm -e {{ oracle_java_search_rpm_result.stdout }}"
+      ansible.builtin.command: >-
+        rpm -e {{ oracle_java_search_rpm_result.stdout }}
       args:
         warn: no
       register: oracle_java_uninstall_package_result
@@ -15,7 +16,7 @@
       when: oracle_java_search_rpm_result.rc == 0
 
     - name: Remove alternatives to oracle java binaries
-      command: >-
+      ansible.builtin.command: >-
         update-alternatives
         --remove {{ item | basename }}
         {{ item }}
