@@ -1,12 +1,12 @@
 ---
-# Role tasks
 
-- block:
-    - import_tasks: check.yml
-    - import_tasks: download.yml
-    - import_tasks: install.yml
-    - import_tasks: configure.yml
-    - import_tasks: uninstall.yml
-    - import_tasks: cleanup.yml
+- name: Setup oracle java
+  block:
+    - ansible.builtin.import_tasks: check.yml
+    - ansible.builtin.import_tasks: download.yml
+    - ansible.builtin.import_tasks: install.yml
+    - ansible.builtin.import_tasks: configure.yml
+    - ansible.builtin.import_tasks: uninstall.yml
+    - ansible.builtin.import_tasks: cleanup.yml
   tags:
     - role::oracle_java

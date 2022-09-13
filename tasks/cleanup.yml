@@ -1,8 +1,7 @@
 ---
-# Role cleanup tasks
 
 - name: Remove oracle java package
-  include_role:
+  ansible.builtin.include_role:
     name: amtega.artifact
   vars:
     override:

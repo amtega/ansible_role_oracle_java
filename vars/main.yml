@@ -23,7 +23,7 @@ oracle_java_latest_versions: >-
 oracle_java_official_download_host: https://download.oracle.com
 
 oracle_java_official_download_path: >-
-  /java/{{ oracle_java_effective_version_major}}/archive
+  /java/{{ oracle_java_effective_version_major }}/archive
 
 oracle_java_official_download_file: >-
   jdk-{{ oracle_java_effective_version }}_linux-x64_bin.rpm

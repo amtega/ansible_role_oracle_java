@@ -5,11 +5,11 @@
   gather_facts: no
   tasks:
     - name: Gather java version
-      command: /usr/bin/java -version
+      ansible.builtin.command: /usr/bin/java -version
       changed_when: no
       register: check_java_result
 
     - name: Assert java is installed
-      assert:
+      ansible.builtin.assert:
         that: >-
           check_java_result.stderr is search("Java.* SE Runtime Environment")

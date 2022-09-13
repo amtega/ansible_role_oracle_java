@@ -1,11 +1,10 @@
 ---
-# Role install tasks
 
 # We use rpm instead of ansible package module due to several "nothing provides
 # ..." error messages when using yum/dnf
 
 - name: Install oracle java package
-  command: "rpm -U {{ oracle_java_package }} --nodeps"
+  ansible.builtin.command: "rpm -U {{ oracle_java_package }} --nodeps"
   args:
     warn: no
   when:

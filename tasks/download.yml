@@ -1,9 +1,9 @@
 ---
-# Role download tasks
 
-- block:
+- name: Download oracle java
+  block:
     - name: Check if oracle java is installed
-      stat:
+      ansible.builtin.stat:
         path: "{{ java_path }}"
       register: oracle_java_check_installed_result
       vars:
@@ -31,7 +31,7 @@
              + arch
              + "/bin/java" }}
 
-    - include_tasks: artifact.yml
+    - ansible.builtin.include_tasks: artifact.yml
   when: oracle_java_state == "present"
   tags:
     - role::oracle_java
