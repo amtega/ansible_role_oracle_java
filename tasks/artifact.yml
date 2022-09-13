@@ -1,8 +1,7 @@
 ---
-# Role artifact tasks
 
 - name: Download oracle java package
-  include_role:
+  ansible.builtin.include_role:
     name: amtega.artifact
   when: not oracle_java_check_installed_result.stat.exists
   vars:

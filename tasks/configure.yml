@@ -1,9 +1,9 @@
 ---
-# Role configure tasks
 
-- block:
+- name: Configure oracle java
+  block:
     - name: Search installed java packages
-      shell: "rpm -qa | grep jdk | grep {{ pattern }}"
+      ansible.builtin.shell: "rpm -qa | grep jdk | grep {{ pattern }}"
       args:
         warn: no
       register: oracle_java_search_rpm_result
@@ -17,7 +17,7 @@
                        oracle_java_effective_version) }}
 
     - name: Search java binaries
-      shell: >-
+      ansible.builtin.shell: >-
         rpm -ql {{ oracle_java_search_rpm_result.stdout }} | grep "/bin/"
       args:
         warn: no
@@ -25,9 +25,10 @@
       changed_when: no
       when: oracle_java_search_rpm_result.rc == 0
 
-    - block:
+    - name: Setup java home and alternatives
+      block:
         - name: Setup fact with the oracle java home
-          set_fact:
+          ansible.builtin.set_fact:
             oracle_java_home: "{{ java_home }}"
           vars:
             java_home: >-
@@ -38,7 +39,7 @@
                  | regex_replace("^(.*)/bin/java$", "\1") }}
 
         - name: Setup alternatives to oracle java
-          alternatives:
+          community.general.alternatives:
             name: "{{ item }}"
             link: "/usr/bin/{{ item | basename }}"
             path: "{{ oracle_java_home }}/bin/{{ item }}"

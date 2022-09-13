@@ -1,21 +1,22 @@
 ---
-# Role check tasks
 
-- block:
+- name: Check oracle java
+  block:
     - name: Gather facts
-      setup:
+      ansible.builtin.setup:
       when: >-
         ansible_facts is not defined
         or ansible_facts.architecture is not defined
 
-    - block:
+    - name: Gather oracle java last version
+      block:
         - name: Setup fact with oracle java latest versions
-          set_fact:
+          ansible.builtin.set_fact:
             oracle_java_latest_versions: >-
               {{ oracle_java_latest_versions }}
 
         - name: Setup fact with oracle java last version
-          set_fact:
+          ansible.builtin.set_fact:
             oracle_java_latest_version: >-
               {{ oracle_java_latest_versions | first }}
       when: >-
@@ -23,14 +24,14 @@
         or oracle_java_artifact is undefined
 
     - name: Setup fact with oracle java effective version
-      set_fact:
+      ansible.builtin.set_fact:
         oracle_java_effective_version: >-
           {{ (oracle_java_version == "latest")
              | ternary(oracle_java_latest_version | default(""),
                        oracle_java_version) }}
 
     - name: Setup fact with oracle default artifact
-      set_fact:
+      ansible.builtin.set_fact:
         oracle_java_default_artifact:
           id: oracle_java
           type: https
@@ -45,7 +46,7 @@
         or oracle_java_artifact is undefined
 
     - name: Assert version to download is valid
-      assert:
+      ansible.builtin.assert:
         that:
           oracle_java_effective_version in oracle_java_latest_versions
       when: oracle_java_artifact is undefined
